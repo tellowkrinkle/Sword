@@ -163,7 +163,7 @@ public struct Overwrite {
   public let deny: Int
 
   /// ID of overwrite
-  public let id: String
+  public let id: SnowflakeID
 
   /// Either "role" or "member"
   public let type: String
@@ -178,7 +178,7 @@ public struct Overwrite {
   init(_ json: [String: Any]) {
     self.allow = json["allow"] as! Int
     self.deny = json["deny"] as! Int
-    self.id = json["id"] as! String
+    self.id = SnowflakeID(json["id"] as! String)!
     self.type = json["type"] as! String
   }
 

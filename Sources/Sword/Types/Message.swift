@@ -224,7 +224,7 @@ public struct Attachment {
   public let height: Int?
 
   /// ID of attachment
-  public let id: String
+  public let id: SnowflakeID
 
   /// The proxied URL for this attachment
   public let proxyUrl: String
@@ -248,7 +248,7 @@ public struct Attachment {
   init(_ json: [String: Any]) {
     self.filename = json["filename"] as! String
     self.height = json["height"] as? Int
-    self.id = json["id"] as! String
+    self.id = SnowflakeID(json["id"] as! String)!
     self.proxyUrl = json["proxy_url"] as! String
     self.size = json["size"] as! Int
     self.url = json["url"] as! String
