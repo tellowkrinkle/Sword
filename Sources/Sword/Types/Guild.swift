@@ -543,5 +543,23 @@ public struct Emoji {
       }
     }
   }
+}
 
+/// Either a discord custom emoji or a Unicode emoji
+public enum AnyEmoji {
+  case custom(Emoji), unicode(String)
+  init(_ string: String) {
+    self = .unicode(string)
+  }
+  init(_ emoji: Emoji) {
+    self = .custom(emoji)
+  }
+  var urlFriendlyString: String {
+    switch self {
+    case let .custom(emoji):
+      return "\(emoji.name):\(emoji.id)".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+    case let .unicode(string):
+      return string.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+    }
+  }
 }

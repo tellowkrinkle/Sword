@@ -169,7 +169,7 @@ open class Sword: Eventable {
    - parameter messageId: Message to add reaction to
    - parameter channelId: Channel to add reaction to message in
   */
-  public func addReaction(_ reaction: String, to messageId: SnowflakeID, in channelId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func addReaction(_ reaction: AnyEmoji, to messageId: SnowflakeID, in channelId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.request(.createReaction(channel: channelId, message: messageId, emoji: reaction)) { data, error in
       completion(error)
     }
@@ -427,7 +427,7 @@ open class Sword: Eventable {
    - parameter userId: If nil, deletes bot's reaction from, else delete a reaction from user
    - parameter channelId: Channel to delete reaction from
   */
-  public func deleteReaction(_ reaction: String, from messageId: SnowflakeID, by userId: SnowflakeID? = nil, in channelId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func deleteReaction(_ reaction: AnyEmoji, from messageId: SnowflakeID, by userId: SnowflakeID? = nil, in channelId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
     var url: Endpoint? = nil
     if let userId = userId {
       url = .deleteUserReaction(channel: channelId, message: messageId, emoji: reaction, user: userId)
@@ -1001,7 +1001,7 @@ open class Sword: Eventable {
    - parameter messageId: Message to get reaction users from
    - parameter channelId: Channel to get reaction from
   */
-  public func getReaction(_ reaction: String, from messageId: SnowflakeID, in channelId: SnowflakeID, then completion: @escaping ([User]?, RequestError?) -> ()) {
+  public func getReaction(_ reaction: AnyEmoji, from messageId: SnowflakeID, in channelId: SnowflakeID, then completion: @escaping ([User]?, RequestError?) -> ()) {
     self.request(.getReactions(channel: channelId, message: messageId, emoji: reaction)) { [unowned self] data, error in
       if error != nil {
         completion(nil, error)

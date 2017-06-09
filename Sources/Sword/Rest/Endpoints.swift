@@ -32,7 +32,7 @@ enum Endpoint {
 
   case createMessage(SnowflakeID)
 
-  case createReaction(channel: SnowflakeID, message: SnowflakeID, emoji: String)
+  case createReaction(channel: SnowflakeID, message: SnowflakeID, emoji: AnyEmoji)
 
   case createWebhook(SnowflakeID)
 
@@ -52,11 +52,11 @@ enum Endpoint {
 
   case deleteMessage(channel: SnowflakeID, message: SnowflakeID)
 
-  case deleteOwnReaction(channel: SnowflakeID, message: SnowflakeID, emoji: String)
+  case deleteOwnReaction(channel: SnowflakeID, message: SnowflakeID, emoji: AnyEmoji)
 
   case deletePinnedChannelMessage(channel: SnowflakeID, message: SnowflakeID)
 
-  case deleteUserReaction(channel: SnowflakeID, message: SnowflakeID, emoji: String, user: SnowflakeID)
+  case deleteUserReaction(channel: SnowflakeID, message: SnowflakeID, emoji: AnyEmoji, user: SnowflakeID)
 
   case deleteWebhook(webhook: SnowflakeID, token: String?)
 
@@ -108,7 +108,7 @@ enum Endpoint {
 
   case getPinnedMessages(SnowflakeID)
 
-  case getReactions(channel: SnowflakeID, message: SnowflakeID, emoji: String)
+  case getReactions(channel: SnowflakeID, message: SnowflakeID, emoji: AnyEmoji)
 
   case getUser(SnowflakeID)
 

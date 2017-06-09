@@ -48,8 +48,13 @@ extension Sword {
 
       url.remove(at: url.index(before: url.endIndex))
     }
-
-    var request = URLRequest(url: URL(string: url)!)
+    
+    guard let urlToRequest = URL(string: url) else {
+      print("[Sword] tried to use invalid URL \"\(url)\".  Please bug report this.")
+      return
+    }
+    var request = URLRequest(url: urlToRequest)
+    
     request.httpMethod = endpointInfo.method.rawValue.uppercased()
 
     if authorization {
