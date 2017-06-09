@@ -32,7 +32,7 @@ public struct Message {
   public internal(set) var embeds = [Embed]()
 
   /// Message ID
-  public let id: String
+  public let id: SnowflakeID
 
   /// Whether or not this message mentioned everyone
   public let isEveryoneMentioned: Bool
@@ -59,7 +59,7 @@ public struct Message {
   public let timestamp: Date
 
   /// If message was sent by webhook, this is that webhook's ID
-  public let webhookId: String?
+  public let webhookId: SnowflakeID?
 
   // MARK: Initializer
 
@@ -83,15 +83,17 @@ public struct Message {
 
     self.content = json["content"] as! String
 
-    let guild = sword.getGuild(for: json["channel_id"] as! String)
+    let channelID = SnowflakeID(json["channel_id"] as! String)!
+    
+    let guild = sword.getGuild(for: channelID)
     if guild != nil {
-      self.channel = guild!.channels[json["channel_id"] as! String]!
+      self.channel = guild!.channels[channelID]!
     }else {
-      let dm = sword.getDM(for: json["channel_id"] as! String)
+      let dm = sword.getDM(for: channelID)
       if dm != nil {
         self.channel = dm!
       }else {
-        self.channel = sword.groups[json["channel_id"] as! String]!
+        self.channel = sword.groups[channelID]!
       }
     }
 
@@ -106,7 +108,7 @@ public struct Message {
       self.embeds.append(Embed(embed))
     }
 
-    self.id = json["id"] as! String
+    self.id = SnowflakeID(json["id"] as! String)!
 
     if json["webhook_id"] == nil {
       for (_, guild) in sword.guilds {
@@ -126,7 +128,7 @@ public struct Message {
       self.mentions.append(User(sword, mention))
     }
 
-    let mentionedRoles = json["mention_roles"] as! [String]
+    let mentionedRoles = (json["mention_roles"] as! [String]).map { SnowflakeID($0)! }
     for mentionedRole in mentionedRoles {
       self.mentionedRoles.append((self.channel as! GuildChannel).guild!.roles[mentionedRole]!)
     }
@@ -137,7 +139,7 @@ public struct Message {
     self.isPinned = json["pinned"] as! Bool
     self.timestamp = (json["timestamp"] as! String).date
     self.isTts = json["tts"] as! Bool
-    self.webhookId = json["webhook_id"] as? String
+    self.webhookId = SnowflakeID(json["webhook_id"] as? String)
   }
 
   // MARK: Functions
@@ -162,7 +164,7 @@ public struct Message {
    - parameter reaction: Either unicode or custom emoji reaction to remove
    - parameter userId: If nil, delete from self else delete from userId
   */
-  public func delete(reaction: String, from userId: String? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func delete(reaction: String, from userId: SnowflakeID? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.channel.deleteReaction(reaction, from: self.id, by: userId ?? nil, then: completion)
   }
 
