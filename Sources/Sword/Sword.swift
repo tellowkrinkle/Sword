@@ -392,12 +392,7 @@ open class Sword: Eventable {
   public func deleteMessages(_ messages: [SnowflakeID], from channelId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
     let oldestMessage = UInt64((Date().timeIntervalSince1970 - 1421280000000)) * 4194304
     for message in messages {
-      
-      guard let messageId = UInt64(message) else {
-        completion(.unknown)
-        return
-      }
-      if messageId < oldestMessage {
+      if message < oldestMessage {
         completion(.unknown)
       }
     }
@@ -1044,7 +1039,7 @@ open class Sword: Eventable {
    - parameter guildId: Guild to get shard for
   */
   public func getShard(for guildId: SnowflakeID) -> Int {
-    return Int((UInt64(guildId)! >> 22) % UInt64(self.shardCount))
+    return Int((UInt64(guildId) >> 22) % UInt64(self.shardCount))
   }
 
   /**

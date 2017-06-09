@@ -4,8 +4,8 @@
 //
 
 
-/// The stored type of a Discord Snowflake ID.  Currently a String, could be a UInt64 in the future.
-public typealias SnowflakeID = String
+/// The stored type of a Discord Snowflake ID.
+public typealias SnowflakeID = UInt64
 
 extension SnowflakeID {
   init?(_ optionalString: String?) {
