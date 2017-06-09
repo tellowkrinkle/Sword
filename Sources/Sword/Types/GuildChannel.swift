@@ -60,7 +60,7 @@ public struct GuildChannel: Channel {
   public let name: String?
 
   /// Array of Overwrite strcuts for channel
-  public private(set) var permissionOverwrites = [String: Overwrite]()
+  public private(set) var permissionOverwrites = [SnowflakeID: Overwrite]()
 
   /// Position of channel
   public let position: Int?
