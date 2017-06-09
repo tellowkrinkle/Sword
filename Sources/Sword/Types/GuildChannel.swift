@@ -21,8 +21,8 @@ public struct GuildChannel: Channel {
 
   /// Guild object for this channel
   public var guild: Guild? {
-    if self.guildId != nil {
-      return self.sword!.guilds[self.guildId!]
+    if let guildId = self.guildId {
+      return self.sword!.guilds[guildId]
     }else {
       return nil
     }
@@ -100,8 +100,8 @@ public struct GuildChannel: Channel {
     let name = json["name"] as? String
     self.name = name
 
-    if name != nil {
-      self.isNsfw = name! == "nsfw" || name!.hasPrefix("nsfw-")
+    if let name = name {
+      self.isNsfw = name == "nsfw" || name.hasPrefix("nsfw-")
     }else {
       self.isNsfw = nil
     }

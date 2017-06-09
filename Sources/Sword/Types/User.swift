@@ -61,12 +61,12 @@ public struct User {
     self.username = json["username"] as? String
     self.isVerified = json["verified"] as? Bool
 
-    guard self.avatar != nil else {
+    guard let avatar = self.avatar else {
       self.avatarUrl = nil
       return
     }
 
-    self.avatarUrl = "https://cdn.discordapp.com/avatars/\(self.id)/\(self.avatar!).png"
+    self.avatarUrl = "https://cdn.discordapp.com/avatars/\(self.id)/\(avatar).png"
   }
 
   // MARK: Functions

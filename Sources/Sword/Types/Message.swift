@@ -86,12 +86,12 @@ public struct Message {
     let channelID = SnowflakeID(json["channel_id"] as! String)!
     
     let guild = sword.getGuild(for: channelID)
-    if guild != nil {
-      self.channel = guild!.channels[channelID]!
+    if let guild = guild {
+      self.channel = guild.channels[channelID]!
     }else {
       let dm = sword.getDM(for: channelID)
-      if dm != nil {
-        self.channel = dm!
+      if let dm = dm {
+        self.channel = dm
       }else {
         self.channel = sword.groups[channelID]!
       }

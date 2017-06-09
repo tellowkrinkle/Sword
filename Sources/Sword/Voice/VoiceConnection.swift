@@ -388,8 +388,8 @@ public class VoiceConnection: Eventable {
     process.launch()
 
     self.on(.connectionClose) { [weak process] _ in
-      guard process != nil else { return }
-      kill(process!.processIdentifier, SIGKILL)
+      guard let process = process else { return }
+      kill(process.processIdentifier, SIGKILL)
     }
   }
 

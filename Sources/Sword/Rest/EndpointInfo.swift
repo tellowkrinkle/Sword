@@ -89,8 +89,8 @@ extension Endpoint {
         return ("/channels/\(channel)/messages/\(message)/reactions/\(reaction.urlFriendlyString)/\(user)", .delete)
 
       case let .deleteWebhook(webhook, token):
-        if token != nil {
-          return ("/webhooks/\(webhook)/\(token!)", .delete)
+        if let token = token {
+          return ("/webhooks/\(webhook)/\(token)", .delete)
         }
 
         return ("/webhooks/\(webhook)", .delete)
@@ -180,8 +180,8 @@ extension Endpoint {
         return ("/users/@me/channels", .get)
 
       case let .getWebhook(webhook, token):
-        if token != nil {
-          return ("/webhooks/\(webhook)/\(token!)", .get)
+        if let token = token {
+          return ("/webhooks/\(webhook)/\(token)", .get)
         }
 
         return ("/webhooks/\(webhook)", .get)
@@ -223,8 +223,8 @@ extension Endpoint {
         return ("/guilds/\(guild)/roles", .patch)
 
       case let .modifyWebhook(webhook, token):
-        if token != nil {
-          return ("/webhooks/\(webhook)/\(token!)", .patch)
+        if let token = token {
+          return ("/webhooks/\(webhook)/\(token)", .patch)
         }
 
         return ("/webhooks/\(webhook)", .patch)
