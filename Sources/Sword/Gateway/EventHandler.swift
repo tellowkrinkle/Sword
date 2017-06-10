@@ -254,7 +254,18 @@ extension Shard {
           }
           self.sword.emit(.messageDeleteBulk, with: (messages, dm))
         }
-
+      
+      /// MESSAGE_REACTION_ADD, MESSAGE_REACTION_REMOVE
+      case .messageReactionAdded, .messageReactionRemoved:
+        let channelID = Snowflake(data["channel_id"] as! String)!
+        let userID = Snowflake(data["user_id"] as! String)!
+        let messageID = Snowflake(data["message_id"] as! String)!
+        let emojiDict = data["emoji"] as! [String: Any]
+        let emojiID = Snowflake(emojiDict["id"] as? String)
+        let emojiName = emojiDict["name"] as! String
+        let emoji = AnyEmoji(id: emojiID, name: emojiName)
+        self.sword.emit(event, with: (channelID, userID, messageID, emoji))
+      
       /// MESSAGE_UPDATE
       case .messageUpdate:
         self.sword.emit(.messageUpdate, with: data)
