@@ -104,7 +104,7 @@ extension Shard {
         self.sword.guilds[guildId] = guild
 
         if self.sword.unavailableGuilds[guildId] != nil {
-          self.sword.unavailableGuilds[guildId] = nil
+          self.sword.unavailableGuilds.removeValue(forKey: guildId)
           self.sword.emit(.guildAvailable, with: guild)
         }else {
           self.sword.emit(.guildCreate, with: guild)
