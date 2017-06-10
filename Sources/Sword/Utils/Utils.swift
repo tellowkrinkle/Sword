@@ -22,6 +22,7 @@ extension String {
   /// Computed property to get date from string
   var date: Date {
     let dateFormat = DateFormatter()
+    dateFormat.locale = Locale(identifier: "en-us")
     dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
 
     if let returnDate = dateFormat.date(from: self) {
@@ -36,6 +37,7 @@ extension String {
   /// Computed property to get date from string (specifically the Date header from requests)
   var httpDate: Date {
     let dateFormat = DateFormatter()
+    dateFormat.locale = Locale(identifier: "en-us")
     dateFormat.dateFormat = "E, dd MMM yyyy HH:mm:ss zzzz"
 
     return dateFormat.date(from: self)!
