@@ -17,13 +17,13 @@ public class Guild {
   public internal(set) weak var sword: Sword?
 
   /// ID of afk voice channel (if there is any)
-  public let afkChannelId: SnowflakeID?
+  public let afkChannelId: Snowflake?
 
   /// AFK timeout (if there is any)
   public let afkTimeout: Int?
 
   /// Collection of channels mapped by channel ID
-  public internal(set) var channels = [SnowflakeID: GuildChannel]()
+  public internal(set) var channels = [Snowflake: GuildChannel]()
 
   /// Default notification protocol
   public let defaultMessageNotifications: Int
@@ -41,7 +41,7 @@ public class Guild {
   public let icon: String?
 
   /// ID of guild
-  public let id: SnowflakeID
+  public let id: Snowflake
 
   /// Whether or not this guild is embeddable
   public let isEmbedEnabled: Bool?
@@ -56,7 +56,7 @@ public class Guild {
   public let memberCount: Int?
 
   /// Collection of members mapped by user ID
-  public internal(set) var members = [SnowflakeID: Member]()
+  public internal(set) var members = [Snowflake: Member]()
 
   /// MFA level of guild
   public let mfaLevel: Int
@@ -65,13 +65,13 @@ public class Guild {
   public let name: String
 
   /// Owner's user ID
-  public let ownerId: SnowflakeID
+  public let ownerId: Snowflake
 
   /// Region this guild is hosted in
   public let region: String
 
   /// Collection of roles mapped by role ID
-  public internal(set) var roles = [SnowflakeID: Role]()
+  public internal(set) var roles = [Snowflake: Role]()
 
   /// Shard ID this guild is handled by
   public let shard: Int?
@@ -83,7 +83,7 @@ public class Guild {
   public let verificationLevel: Int
 
   /// Collection of member voice states currently in this guild
-  public internal(set) var voiceStates = [SnowflakeID: VoiceState]()
+  public internal(set) var voiceStates = [Snowflake: VoiceState]()
 
   // MARK: Initializer
 
@@ -97,9 +97,9 @@ public class Guild {
   init(_ sword: Sword, _ json: [String: Any], _ shard: Int? = nil) {
     self.sword = sword
 
-    self.id = SnowflakeID(json["id"] as! String)!
+    self.id = Snowflake(json["id"] as! String)!
 
-    self.afkChannelId = SnowflakeID(json["afk_channel_id"] as? String)
+    self.afkChannelId = Snowflake(json["afk_channel_id"] as? String)
     self.afkTimeout = json["afk_timeout"] as? Int
 
     if let channels = json["channels"] as? [[String: Any]] {
@@ -140,7 +140,7 @@ public class Guild {
 
     self.mfaLevel = json["mfa_level"] as! Int
     self.name = json["name"] as! String
-    self.ownerId = SnowflakeID(json["owner_id"] as! String)!
+    self.ownerId = Snowflake(json["owner_id"] as! String)!
 
     self.region = json["region"] as! String
 
@@ -163,7 +163,7 @@ public class Guild {
 
     if let presences = json["presences"] as? [[String: Any]] {
       for presence in presences {
-        let userId = SnowflakeID((presence["user"] as! [String: Any])["id"] as! String)!
+        let userId = Snowflake((presence["user"] as! [String: Any])["id"] as! String)!
         let presence = Presence(presence)
         self.members[userId]!.presence = presence
       }
@@ -173,8 +173,8 @@ public class Guild {
       for voiceState in voiceStates {
         let voiceStateObjc = VoiceState(voiceState)
 
-        self.voiceStates[SnowflakeID(voiceState["user_id"] as! String)!] = voiceStateObjc
-        self.members[SnowflakeID(voiceState["user_id"] as! String)!]!.voiceState = voiceStateObjc
+        self.voiceStates[Snowflake(voiceState["user_id"] as! String)!] = voiceStateObjc
+        self.members[Snowflake(voiceState["user_id"] as! String)!]!.voiceState = voiceStateObjc
       }
     }
   }
@@ -192,7 +192,7 @@ public class Guild {
    - parameter reason: Reason why member was banned from guild (attached to audit log)
    - parameter options: Deletes messages from this user by amount of days
   */
-  public func ban(_ member: SnowflakeID, for reason: String? = nil, with options: [String: Int] = [:], then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func ban(_ member: Snowflake, for reason: String? = nil, with options: [String: Int] = [:], then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.ban(member, from: self.id, for: reason, with: options, then: completion)
   }
 
@@ -249,7 +249,7 @@ public class Guild {
 
    - parameter integrationId: Integration to delete
   */
-  public func deleteIntegration(_ integrationId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func deleteIntegration(_ integrationId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.deleteIntegration(integrationId, from: self.id, then: completion)
   }
 
@@ -258,7 +258,7 @@ public class Guild {
 
    - parameter roleId: Role to delete
   */
-  public func deleteRole(_ roleId: SnowflakeID, then completion: @escaping (Role?, RequestError?) -> () = {_ in}) {
+  public func deleteRole(_ roleId: Snowflake, then completion: @escaping (Role?, RequestError?) -> () = {_ in}) {
     self.sword?.deleteRole(roleId, from: self.id, then: completion)
   }
 
@@ -331,7 +331,7 @@ public class Guild {
    - parameter userId: Member to kick from server
    - parameter reason: Reason why member was kicked from server
   */
-  public func kick(_ userId: SnowflakeID, for reason: String? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func kick(_ userId: Snowflake, for reason: String? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.kick(userId, from: self.id, for: reason, then: completion)
   }
 
@@ -347,7 +347,7 @@ public class Guild {
    - parameter integrationId: Integration to modify
    - parameter options: Preconfigured options to modify this integration with
   */
-  public func modifyIntegration(_ integrationId: SnowflakeID, with options: [String: Any], then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func modifyIntegration(_ integrationId: Snowflake, with options: [String: Any], then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.modifyIntegration(integrationId, for: self.id, with: options, then: completion)
   }
 
@@ -365,7 +365,7 @@ public class Guild {
    - parameter userId: Member to modify
    - parameter options: Preconfigured options to modify member with
   */
-  public func modifyMember(_ userId: SnowflakeID, with options: [String: Any], then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func modifyMember(_ userId: Snowflake, with options: [String: Any], then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.modifyMember(userId, in: self.id, with: options, then: completion)
   }
 
@@ -383,7 +383,7 @@ public class Guild {
    - parameter roleId: Role to modify
    - parameter options: Preconfigured options to modify guild roles with
   */
-  public func modifyRole(_ roleId: SnowflakeID, with options: [String: Any], then completion: @escaping (Role?, RequestError?) -> () = {_ in}) {
+  public func modifyRole(_ roleId: Snowflake, with options: [String: Any], then completion: @escaping (Role?, RequestError?) -> () = {_ in}) {
     self.sword?.modifyRole(roleId, for: self.id, with: options, then: completion)
   }
 
@@ -445,7 +445,7 @@ public class Guild {
 
    - parameter channelId: The Id of the channel to send them to
   */
-  public func moveMember(_ userId: SnowflakeID, to channelId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func moveMember(_ userId: Snowflake, to channelId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.moveMember(userId, in: self.id, to: channelId, then: completion)
   }
 
@@ -463,7 +463,7 @@ public class Guild {
 
    - parameter integrationId: Integration to sync
   */
-  public func syncIntegration(_ integrationId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func syncIntegration(_ integrationId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.syncIntegration(integrationId, for: self.id, then: completion)
   }
 
@@ -472,7 +472,7 @@ public class Guild {
 
    - parameter userId: User to unban
   */
-  public func unbanMember(_ userId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func unbanMember(_ userId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.unbanMember(userId, from: self.id, then: completion)
   }
 
@@ -510,7 +510,7 @@ public struct Emoji {
   // MARK: Properties
 
   /// ID of custom emoji
-  public let id: SnowflakeID
+  public let id: Snowflake
 
   /// Whether or not this emoji is managed
   public let managed: Bool
@@ -532,7 +532,7 @@ public struct Emoji {
    - parameter json: JSON representable as a dictionary
   */
   init(_ json: [String: Any]) {
-    self.id = SnowflakeID(json["id"] as! String)!
+    self.id = Snowflake(json["id"] as! String)!
     self.managed = json["managed"] as! Bool
     self.name = json["name"] as! String
     self.requireColons = json["require_colons"] as! Bool

@@ -32,7 +32,7 @@ public struct Message {
   public internal(set) var embeds = [Embed]()
 
   /// Message ID
-  public let id: SnowflakeID
+  public let id: Snowflake
 
   /// Whether or not this message mentioned everyone
   public let isEveryoneMentioned: Bool
@@ -59,7 +59,7 @@ public struct Message {
   public let timestamp: Date
 
   /// If message was sent by webhook, this is that webhook's ID
-  public let webhookId: SnowflakeID?
+  public let webhookId: Snowflake?
 
   // MARK: Initializer
 
@@ -83,7 +83,7 @@ public struct Message {
 
     self.content = json["content"] as! String
 
-    let channelID = SnowflakeID(json["channel_id"] as! String)!
+    let channelID = Snowflake(json["channel_id"] as! String)!
     
     let guild = sword.getGuild(for: channelID)
     if let guild = guild {
@@ -108,7 +108,7 @@ public struct Message {
       self.embeds.append(Embed(embed))
     }
 
-    self.id = SnowflakeID(json["id"] as! String)!
+    self.id = Snowflake(json["id"] as! String)!
 
     if json["webhook_id"] == nil {
       for (_, guild) in sword.guilds {
@@ -128,7 +128,7 @@ public struct Message {
       self.mentions.append(User(sword, mention))
     }
 
-    let mentionedRoles = (json["mention_roles"] as! [String]).map { SnowflakeID($0)! }
+    let mentionedRoles = (json["mention_roles"] as! [String]).map { Snowflake($0)! }
     for mentionedRole in mentionedRoles {
       self.mentionedRoles.append((self.channel as! GuildChannel).guild!.roles[mentionedRole]!)
     }
@@ -139,7 +139,7 @@ public struct Message {
     self.isPinned = json["pinned"] as! Bool
     self.timestamp = (json["timestamp"] as! String).date
     self.isTts = json["tts"] as! Bool
-    self.webhookId = SnowflakeID(json["webhook_id"] as? String)
+    self.webhookId = Snowflake(json["webhook_id"] as? String)
   }
 
   // MARK: Functions
@@ -164,7 +164,7 @@ public struct Message {
    - parameter reaction: Either unicode or custom emoji reaction to remove
    - parameter userId: If nil, delete from self else delete from userId
   */
-  public func delete(reaction: AnyEmoji, from userId: SnowflakeID? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func delete(reaction: AnyEmoji, from userId: Snowflake? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.channel.deleteReaction(reaction, from: self.id, by: userId ?? nil, then: completion)
   }
 
@@ -224,7 +224,7 @@ public struct Attachment {
   public let height: Int?
 
   /// ID of attachment
-  public let id: SnowflakeID
+  public let id: Snowflake
 
   /// The proxied URL for this attachment
   public let proxyUrl: String
@@ -248,7 +248,7 @@ public struct Attachment {
   init(_ json: [String: Any]) {
     self.filename = json["filename"] as! String
     self.height = json["height"] as? Int
-    self.id = SnowflakeID(json["id"] as! String)!
+    self.id = Snowflake(json["id"] as! String)!
     self.proxyUrl = json["proxy_url"] as! String
     self.size = json["size"] as! Int
     self.url = json["url"] as! String

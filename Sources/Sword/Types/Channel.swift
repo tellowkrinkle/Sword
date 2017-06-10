@@ -17,13 +17,13 @@ public protocol Channel {
   weak var sword: Sword? { get }
 
   /// The id of the channel
-  var id: SnowflakeID { get }
+  var id: Snowflake { get }
 
   /// The last message's id
-  var lastMessageId: SnowflakeID? { get }
+  var lastMessageId: Snowflake? { get }
 
   /// Collection of messages mapped by message id
-  var messages: [SnowflakeID: Message] { get }
+  var messages: [Snowflake: Message] { get }
 
 }
 
@@ -37,7 +37,7 @@ public extension Channel {
    - parameter reaction: Unicode or custom emoji reaction
    - parameter messageId: Message to add reaction to
   */
-  public func addReaction(_ reaction: AnyEmoji, to messageId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func addReaction(_ reaction: AnyEmoji, to messageId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.addReaction(reaction, to: messageId, in: self.id, then: completion)
   }
 
@@ -51,7 +51,7 @@ public extension Channel {
 
    - parameter messageId: Message to delete
   */
-  public func deleteMessage(_ messageId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func deleteMessage(_ messageId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.deleteMessage(messageId, from: self.id, then: completion)
   }
 
@@ -60,7 +60,7 @@ public extension Channel {
 
    - parameter messages: Array of message ids to delete
   */
-  public func deleteMessages(_ messages: [SnowflakeID], then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func deleteMessages(_ messages: [Snowflake], then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.deleteMessages(messages, from: self.id, then: completion)
   }
 
@@ -71,7 +71,7 @@ public extension Channel {
    - parameter messageId: Message to delete reaction from
    - parameter userId: If nil, deletes bot's reaction from, else delete a reaction from user
   */
-  public func deleteReaction(_ reaction: AnyEmoji, from messageId: SnowflakeID, by userId: SnowflakeID? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func deleteReaction(_ reaction: AnyEmoji, from messageId: Snowflake, by userId: Snowflake? = nil, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.deleteReaction(reaction, from: messageId, by: userId, in: self.id, then: completion)
   }
 
@@ -81,7 +81,7 @@ public extension Channel {
    - parameter messageId: Message to edit
    - parameter content: Text to change message to
   */
-  public func editMessage(_ messageId: SnowflakeID, to content: String, then completion: @escaping (Message?, RequestError?) -> () = {_ in}) {
+  public func editMessage(_ messageId: Snowflake, to content: String, then completion: @escaping (Message?, RequestError?) -> () = {_ in}) {
     self.sword?.editMessage(messageId, to: content, in: self.id, then: completion)
   }
 
@@ -90,7 +90,7 @@ public extension Channel {
 
    - parameter messageId: Id of message you want to get
   **/
-  public func getMessage(_ messageId: SnowflakeID, then completion: @escaping (Message?, RequestError?) -> ()) {
+  public func getMessage(_ messageId: Snowflake, then completion: @escaping (Message?, RequestError?) -> ()) {
     self.sword?.getMessage(messageId, from: self.id, then: completion)
   }
 
@@ -116,7 +116,7 @@ public extension Channel {
    - parameter reaction: Unicode or custom emoji to get
    - parameter messageId: Message to get reaction users from
   */
-  public func getReaction(_ reaction: AnyEmoji, from messageId: SnowflakeID, then completion: @escaping ([User]?, RequestError?) -> ()) {
+  public func getReaction(_ reaction: AnyEmoji, from messageId: Snowflake, then completion: @escaping ([User]?, RequestError?) -> ()) {
     self.sword?.getReaction(reaction, from: messageId, in: self.id, then: completion)
   }
 
@@ -130,7 +130,7 @@ public extension Channel {
 
    - parameter messageId: Message to pin
   */
-  public func pin(_ messageId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func pin(_ messageId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.pin(messageId, in: self.id, then: completion)
   }
 
@@ -148,7 +148,7 @@ public extension Channel {
 
    - parameter messageId: Pinned message to unpin
   */
-  public func unpin(_ messageId: SnowflakeID, then completion: @escaping (RequestError?) -> () = {_ in}) {
+  public func unpin(_ messageId: Snowflake, then completion: @escaping (RequestError?) -> () = {_ in}) {
     self.sword?.unpin(messageId, from: self.id, then: completion)
   }
 
