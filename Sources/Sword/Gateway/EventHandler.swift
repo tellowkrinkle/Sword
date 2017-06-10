@@ -323,7 +323,7 @@ extension Shard {
         let sessionId = Snowflake(data["session_id"] as! String)!
         let userId = Snowflake(data["user_id"] as! String)!
 
-		let guild = self.sword.guilds[guildId]!
+        let guild = self.sword.guilds[guildId]!
 		
         if channelId != nil {
           let voiceState = VoiceState(data)
@@ -368,8 +368,28 @@ extension Shard {
         ).encode()
 
         self.sword.voiceManager.join(guildId, endpoint, payload)
-
-      default:
+      
+      
+      // Ignored
+      case .resume:
+        break
+      
+      // Won't happen here
+      case .audioData:
+        break
+      case .connectionClose:
+        break
+      case .guildAvailable:
+        break
+      case .guildUnavailable:
+        break
+      case .payload:
+        break
+      case .shardReady:
+        break
+      case .voiceChannelJoin:
+        break
+      case .voiceChannelLeave:
         break
     }
   }
