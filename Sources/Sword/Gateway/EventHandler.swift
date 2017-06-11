@@ -130,12 +130,8 @@ extension Shard {
 
       /// GUILD_EMOJIS_UPDATE
       case .guildEmojisUpdate:
-        var emitEmojis: [Emoji] = []
-        let emojis = data["emojis"] as! [[String: Any]]
-        for emoji in emojis {
-          emitEmojis.append(Emoji(emoji))
-        }
-        self.sword.emit(.guildEmojisUpdate, with: (self.sword.guilds[Snowflake(data["guild_id"] as! String)!]!, emitEmojis))
+        let emojis = (data["emojis"] as! [[String: Any]]).map(Emoji.init)
+        self.sword.emit(.guildEmojisUpdate, with: (self.sword.guilds[Snowflake(data["guild_id"] as! String)!]!, emojis))
 
       /// GUILD_INTEGRATIONS_UPDATE
       case .guildIntegrationsUpdate:
